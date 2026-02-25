@@ -22,7 +22,7 @@ public class Timer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StartTimer(); // Delete
+        StartTimer(); // On Round Start
     }
 
     // Update is called once per frame

@@ -46,7 +46,7 @@ public class RoundManager : MonoBehaviour
                 };
             }
         }
-        FirstRound();
+        FirstRound(); // On Round Start
     }
 
     // Update is called once per frame
