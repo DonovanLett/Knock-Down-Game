@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 9125372550011220675}
   m_Layer: 0
   m_Name: Cannonball
-  m_TagString: Untagged
+  m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -147,4 +147,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 7336110468177592914}
-  _abyssDepth: -650
+  _abyssDepth: -6.86

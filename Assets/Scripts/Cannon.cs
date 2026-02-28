@@ -26,6 +26,9 @@ public class Cannon : MonoBehaviour
     private bool _trajectoryEnabled;
 
     [SerializeField]
+    private AudioClip _audioClip;
+
+    [SerializeField]
     private PlayerInputActions _playerInput;
 
     [SerializeField]
@@ -76,6 +79,7 @@ public class Cannon : MonoBehaviour
     {
         Vector3 spawnPosition = _turret.transform.TransformPoint(_packageOffset);
         Projectile projectile = Instantiate(_projectile, spawnPosition, _turret.transform.rotation);
+        AudioSource.PlayClipAtPoint(_audioClip, spawnPosition, 1);
         projectile.transform.parent = _turret.transform.root;
         if (projectile != null)
         {

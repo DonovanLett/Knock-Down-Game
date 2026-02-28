@@ -16,13 +16,13 @@ public class Projectile : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    private void Update()
+   /* private void Update()
     {
         if(transform.position.y <= _abyssDepth)
         {
             Destroy(this.gameObject);
         }
-    }
+    } */
 
     public void Fire(Vector3 velocity)
     {

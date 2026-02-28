@@ -19,6 +19,9 @@ public class RoundManager : MonoBehaviour
     [SerializeField]
     private SimulatedPhysics _simulatedPhysics; // Trajectory
 
+    [SerializeField]
+    private AudioSource _audioSource;
+
     private Dictionary<Transform, TransformData> initialStates =
         new Dictionary<Transform, TransformData>();
 
@@ -46,6 +49,7 @@ public class RoundManager : MonoBehaviour
                 };
             }
         }
+       // _audioSource = GetComponent<AudioSource>();
         FirstRound(); // On Round Start
     }
 
@@ -57,6 +61,7 @@ public class RoundManager : MonoBehaviour
 
     public void FirstRound()
     {
+        _audioSource.Play();
         _currentRound = 0;
         _rounds[0].SetActive(true);
       //  _simulatedPhysics.AddDrumsToPhysicsScene(_rounds[0].transform); /// Trajectory
@@ -65,6 +70,7 @@ public class RoundManager : MonoBehaviour
 
     public void NextRound()
     {
+        _audioSource.Play();
         _rounds[_currentRound].SetActive(false);
         ResetBottlesInLevel(_currentRound);
         if (_currentRound < _rounds.Length - 1)

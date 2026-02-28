@@ -45,6 +45,7 @@ public class Threshold : MonoBehaviour
         {
             _bottles.Remove(other.gameObject);
             _pointSystem.AddPoints();
+            other.gameObject.SetActive(false);
             ///
             /// Possibly set other to false
             ///
@@ -53,6 +54,10 @@ public class Threshold : MonoBehaviour
                 _roundManager.NextRound();
             }
         }
+        else if(other.gameObject.tag == "Projectile") ///
+        { ///
+            Destroy(other.gameObject); ///
+        } ///
     }
 
     public void OnTimerEnded()
