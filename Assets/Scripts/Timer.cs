@@ -10,6 +10,12 @@ public class Timer : MonoBehaviour
     [SerializeField]
     private int _currentTime;
 
+   // [SerializeField]
+    private double _nextTickTime;
+
+    [SerializeField]
+    private AudioSource _tickSource;
+
     [SerializeField]
     private RoundManager _roundManager;
 
@@ -25,7 +31,7 @@ public class Timer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       // StartTimer(); // On Round Start
+        // StartTimer(); // On Round Start
     }
 
     // Update is called once per frame
@@ -37,7 +43,15 @@ public class Timer : MonoBehaviour
     public void StartTimer()
     {
         _currentTime = _time;
-        StartCoroutine(TimerInAction());
+        //
+        Debug.Log(_currentTime);
+        double dspTime = AudioSettings.dspTime;
+        _nextTickTime = dspTime + 1.0f;
+        ScheduleNextTick();
+        //
+        // ConnectClickWithTimer();
+
+        // StartCoroutine(TimerInAction());
     }
 
     IEnumerator TimerInAction()
@@ -47,7 +61,7 @@ public class Timer : MonoBehaviour
         {
             yield return new WaitForSeconds(1.0f);
             _currentTime--;
-            // Tick sound effect
+           // _tickSource.Play(); // Timer
             Debug.Log(_currentTime);
         }
         yield return new WaitForSeconds(1.0f);
@@ -56,4 +70,32 @@ public class Timer : MonoBehaviour
         _threshold.OnTimerEnded();
         _roundManager.EnableFollowingRoundsInput(); // Get rid of this line in the future
     }
+
+    //
+    void ScheduleNextTick()
+    {
+        if (_currentTime <= 0)
+        {
+            return;
+        }
+        _tickSource.PlayScheduled(_nextTickTime);
+
+        _nextTickTime += 1.0f; // 1 second intervals
+        _currentTime--;
+        Debug.Log(_currentTime);
+
+        Invoke(nameof(ScheduleNextTick), 1f);
+    }
+    //
+
+    /* public void ConnectClickWithTimer()
+     {
+         _currentTime = _time;
+         double dspTime = AudioSettings.dspTime;
+
+         for (int i = 0; i < _currentTime; i++)
+         {
+             _tickSource.PlayScheduled(dspTime + i + 1);
+         }
+     } */
 }
