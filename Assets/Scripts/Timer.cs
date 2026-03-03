@@ -14,6 +14,9 @@ public class Timer : MonoBehaviour
     private RoundManager _roundManager;
 
     [SerializeField]
+    private LevelManager _levelManager;
+
+    [SerializeField]
     private PointSystem _pointSystem;
 
     [SerializeField]
@@ -22,7 +25,7 @@ public class Timer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StartTimer(); // On Round Start
+       // StartTimer(); // On Round Start
     }
 
     // Update is called once per frame
@@ -47,8 +50,9 @@ public class Timer : MonoBehaviour
             Debug.Log(_currentTime);
         }
         yield return new WaitForSeconds(1.0f);
-        _roundManager.OnTimerEnded();
+        _levelManager.OnTimerEnded();
         _pointSystem.OnTimerEnded();
         _threshold.OnTimerEnded();
+        _roundManager.EnableFollowingRoundsInput(); // Get rid of this line in the future
     }
 }

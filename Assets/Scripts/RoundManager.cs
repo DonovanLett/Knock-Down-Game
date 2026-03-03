@@ -1,155 +1,70 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class RoundManager : MonoBehaviour
 {
     [SerializeField]
-    private GameObject[] _rounds;
+    private LevelManager _levelManager;
 
     [SerializeField]
-    private int _currentRound;
+    private Cannon _cannon;
 
     [SerializeField]
-    private bool _roundInProgress; // _isRoundActive
+    private Timer _timer;
 
     [SerializeField]
-    private Threshold _threshold;
+    private PlayerInputActions _playerInput;
 
     [SerializeField]
-    private SimulatedPhysics _simulatedPhysics; // Trajectory
+    private bool _firstRound;
 
-    [SerializeField]
-    private AudioSource _audioSource;
-
-    private Dictionary<Transform, TransformData> initialStates =
-        new Dictionary<Transform, TransformData>();
-
-    private struct TransformData
-    {
-        public Vector3 localPosition;
-        public Quaternion localRotation;
-        public Vector3 localScale;
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        Transform[] allObjects = Resources.FindObjectsOfTypeAll<Transform>();
-
-        foreach (Transform obj in allObjects)
-        {
-            if (obj.CompareTag("Bottle"))
-            {
-                initialStates[obj] = new TransformData
-                {
-                    localPosition = obj.localPosition,
-                    localRotation = obj.localRotation,
-                    localScale = obj.localScale
-                };
-            }
-        }
-       // _audioSource = GetComponent<AudioSource>();
-        FirstRound(); // On Round Start
-    }
-
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
         
     }
 
-    public void FirstRound()
+    private void OnEnable()
     {
-        _audioSource.Play();
-        _currentRound = 0;
-        _rounds[0].SetActive(true);
-      //  _simulatedPhysics.AddDrumsToPhysicsScene(_rounds[0].transform); /// Trajectory
-        _threshold.GetRoundBottles(_rounds[0].transform);
+        _playerInput = new PlayerInputActions();
+        _playerInput.FirstRound.Enable();
+        _playerInput.FirstRound.BeginRound.performed += BeginRound;
     }
 
-    public void NextRound()
+    public void EnableFollowingRoundsInput()
     {
-        _audioSource.Play();
-        _rounds[_currentRound].SetActive(false);
-        ResetBottlesInLevel(_currentRound);
-        if (_currentRound < _rounds.Length - 1)
-        {
-            _currentRound++;
-        }
-        else /// Delete in a second
-        {
-            _currentRound = 0;
-        }
-        _rounds[_currentRound].SetActive(true);
-        //_simulatedPhysics.AddDrumsToPhysicsScene(_rounds[_currentRound].transform); /// Trajectory
-        _threshold.GetRoundBottles(_rounds[_currentRound].transform);
+        _playerInput.FollowingRounds.Enable();
+        _playerInput.FollowingRounds.BeginRound.performed += BeginRound;
+        _cannon.DisableControl(); // Get rid of this line in the future
     }
 
-   /* public void NextRound() //ORIGINAL
+    private void BeginRound(InputAction.CallbackContext obj)
     {
-        if (_currentRound < _rounds.Length - 1)
+        if (_firstRound == false)
         {
-            _rounds[_currentRound].SetActive(false);
-            ResetBottlesInLevel(_currentRound);
-            _currentRound++;
-            _rounds[_currentRound].SetActive(true);
-            _threshold.GetRoundBottles(_rounds[_currentRound].transform);
+            _cannon.ResetRotation();
+            DisableFollowingRoundsInput();
         }
-        else /// Delete in a second
+        else
         {
-            _rounds[_currentRound].SetActive(false);
-            ResetBottlesInLevel(_currentRound);
-            _currentRound = 0;
-            _rounds[_currentRound].SetActive(true);
-            _threshold.GetRoundBottles(_rounds[_currentRound].transform);
+            _firstRound = false; // Get rid of this line in the future
+            DisableFirstRoundInput();
         }
-    } */
-
-    public void OnTimerEnded()
-    {
-        _roundInProgress = false;
-        _rounds[_currentRound].SetActive(false);
-        ResetBottlesInLevel(_currentRound);
-        _currentRound = 0;
+        _timer.StartTimer();
+        _levelManager.FirstLevel();
+        _cannon.EnableControl();
     }
 
-  /*  public void ResetBottles()
+    private void DisableFirstRoundInput()
     {
-        foreach (var pair in initialStates)
-        {
-            Transform t = pair.Key;
-            TransformData data = pair.Value;
+        _playerInput.FirstRound.BeginRound.performed -= BeginRound;
+        _playerInput.FirstRound.Disable();
+    }
 
-            t.localPosition = data.localPosition;
-            t.localRotation = data.localRotation;
-            t.localScale = data.localScale;
-        }
-    } */
-
-    public void ResetBottlesInLevel(int level)
+    private void DisableFollowingRoundsInput()
     {
-        foreach (var pair in initialStates)
-        {
-            Transform t = pair.Key;
-
-            if (t.transform.IsChildOf(_rounds[level].transform))
-            {
-                TransformData data = pair.Value;
-
-                t.localPosition = data.localPosition;
-                t.localRotation = data.localRotation;
-                t.localScale = data.localScale;
-
-                Rigidbody rb = t.GetComponent<Rigidbody>();
-                if (rb != null)
-                {
-                    rb.velocity = Vector3.zero;
-                    rb.angularVelocity = Vector3.zero;
-                }
-
-                t.gameObject.SetActive(true);
-            }
-        }
+        _playerInput.FollowingRounds.BeginRound.performed -= BeginRound;
+        _playerInput.FollowingRounds.Disable();
     }
 }

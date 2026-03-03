@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Cannon : MonoBehaviour
 {
@@ -9,6 +10,12 @@ public class Cannon : MonoBehaviour
 
     [SerializeField]
     private float _yRotationSpeed, _zRotationSpeed;
+
+    [SerializeField]
+    private float _defaultYRotation, _defaultZRotation;
+
+    [SerializeField]
+    private ArticulationReducedSpace _defaultCannonJointPosition, _defaultTurretJointPosition;
 
     [SerializeField]
     private Projectile _projectile;
@@ -36,19 +43,44 @@ public class Cannon : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        ArticulationBody body = GetComponent<ArticulationBody>();
+        _defaultCannonJointPosition = body.jointPosition;
+
+        ArticulationBody turretBody = _turret.GetComponent<ArticulationBody>();
+        _defaultCannonJointPosition = turretBody.jointPosition;
+
+       // _defaultYRotation = transform.rotation.y;
+       // _defaultZRotation = _turret.transform.rotation.z;
+    }
+
+    public void EnableControl()
+    {
+        _playerInput.Cannon.Enable();
+        _playerInput.Cannon.Fire.performed += Fire;
+
+        //  _playerInput.Cannon.Trajectory.performed += Trajectory;
+
+        _playerInput.Cannon.Trajectory.started += EnableTrajectory; // Trajectory
+        _playerInput.Cannon.Trajectory.canceled += DisableTrajectory; // Trajectory
+    }
+
+    public void DisableControl()
+    {
+        _playerInput.Cannon.Fire.performed -= Fire;
+
+        //  _playerInput.Cannon.Trajectory.performed += Trajectory;
+
+        _playerInput.Cannon.Trajectory.started -= EnableTrajectory; // Trajectory
+        _playerInput.Cannon.Trajectory.canceled -= DisableTrajectory; // Trajectory
+        _playerInput.Cannon.Disable();
     }
 
     private void OnEnable()
     {
         _playerInput = new PlayerInputActions();
-        _playerInput.Cannon.Enable();
-        _playerInput.Cannon.Fire.performed += Fire;
-
-      //  _playerInput.Cannon.Trajectory.performed += Trajectory;
-
-        _playerInput.Cannon.Trajectory.started += EnableTrajectory; // Trajectory
-        _playerInput.Cannon.Trajectory.canceled += DisableTrajectory; // Trajectory
+        //_defaultYRotation = transform.rotation.y;
+        //_defaultZRotation = _turret.transform.rotation.z;
+        
     }
 
     private void EnableTrajectory(UnityEngine.InputSystem.InputAction.CallbackContext context) // Trajectory
@@ -130,5 +162,18 @@ public class Cannon : MonoBehaviour
        /* var movement = _playerInput.Cannon.Movement.ReadValue<Vector2>();
         transform.Rotate(new Vector3(0, movement.x, 0) * Time.deltaTime * _yRotationSpeed); */
         
+    }
+
+    public void ResetRotation()
+    {
+        ArticulationBody body = GetComponent<ArticulationBody>();
+        body.jointPosition = _defaultCannonJointPosition;
+
+
+        ArticulationBody turretBody = _turret.GetComponent<ArticulationBody>();
+        turretBody.jointPosition = _defaultTurretJointPosition;
+
+     //   transform.rotation = Quaternion.Euler(0, _defaultYRotation, 0);
+     //   _turret.transform.rotation = Quaternion.Euler(0, 0, _defaultZRotation);
     }
 }
