@@ -5,7 +5,7 @@ using UnityEngine;
 public class Threshold : MonoBehaviour
 {
     [SerializeField]
-    private RoundManager _roundManager;
+    private LevelManager _levelManager;
 
      [SerializeField] 
      private PointSystem _pointSystem; 
@@ -51,7 +51,7 @@ public class Threshold : MonoBehaviour
             ///
             if (_bottles.Count <= 0)
             {
-                _roundManager.NextRound();
+                _levelManager.NextLevel();
             }
         }
         else if(other.gameObject.tag == "Projectile") ///

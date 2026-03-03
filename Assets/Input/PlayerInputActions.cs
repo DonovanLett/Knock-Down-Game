@@ -145,6 +145,62 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""FirstRound"",
+            ""id"": ""bbb80c0b-be32-4edc-be21-3646fcc5e4f4"",
+            ""actions"": [
+                {
+                    ""name"": ""BeginRound"",
+                    ""type"": ""Button"",
+                    ""id"": ""7f0be427-d3ca-483e-81ca-612fad7f8a82"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""9438eb52-a919-49e9-a4bd-7a65ba3b69af"",
+                    ""path"": ""<Keyboard>/anyKey"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""BeginRound"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""FollowingRounds"",
+            ""id"": ""27ca651a-3393-4d8a-8980-fdf7d8bb7f1f"",
+            ""actions"": [
+                {
+                    ""name"": ""BeginRound"",
+                    ""type"": ""Button"",
+                    ""id"": ""7760792b-d7d3-42ba-aa95-6827445db2b6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""623a52fd-48ec-4f63-8f69-c3c2508286ef"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""BeginRound"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -154,6 +210,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Cannon_Fire = m_Cannon.FindAction("Fire", throwIfNotFound: true);
         m_Cannon_Movement = m_Cannon.FindAction("Movement", throwIfNotFound: true);
         m_Cannon_Trajectory = m_Cannon.FindAction("Trajectory", throwIfNotFound: true);
+        // FirstRound
+        m_FirstRound = asset.FindActionMap("FirstRound", throwIfNotFound: true);
+        m_FirstRound_BeginRound = m_FirstRound.FindAction("BeginRound", throwIfNotFound: true);
+        // FollowingRounds
+        m_FollowingRounds = asset.FindActionMap("FollowingRounds", throwIfNotFound: true);
+        m_FollowingRounds_BeginRound = m_FollowingRounds.FindAction("BeginRound", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -273,10 +335,110 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         }
     }
     public CannonActions @Cannon => new CannonActions(this);
+
+    // FirstRound
+    private readonly InputActionMap m_FirstRound;
+    private List<IFirstRoundActions> m_FirstRoundActionsCallbackInterfaces = new List<IFirstRoundActions>();
+    private readonly InputAction m_FirstRound_BeginRound;
+    public struct FirstRoundActions
+    {
+        private @PlayerInputActions m_Wrapper;
+        public FirstRoundActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @BeginRound => m_Wrapper.m_FirstRound_BeginRound;
+        public InputActionMap Get() { return m_Wrapper.m_FirstRound; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(FirstRoundActions set) { return set.Get(); }
+        public void AddCallbacks(IFirstRoundActions instance)
+        {
+            if (instance == null || m_Wrapper.m_FirstRoundActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_FirstRoundActionsCallbackInterfaces.Add(instance);
+            @BeginRound.started += instance.OnBeginRound;
+            @BeginRound.performed += instance.OnBeginRound;
+            @BeginRound.canceled += instance.OnBeginRound;
+        }
+
+        private void UnregisterCallbacks(IFirstRoundActions instance)
+        {
+            @BeginRound.started -= instance.OnBeginRound;
+            @BeginRound.performed -= instance.OnBeginRound;
+            @BeginRound.canceled -= instance.OnBeginRound;
+        }
+
+        public void RemoveCallbacks(IFirstRoundActions instance)
+        {
+            if (m_Wrapper.m_FirstRoundActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IFirstRoundActions instance)
+        {
+            foreach (var item in m_Wrapper.m_FirstRoundActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_FirstRoundActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public FirstRoundActions @FirstRound => new FirstRoundActions(this);
+
+    // FollowingRounds
+    private readonly InputActionMap m_FollowingRounds;
+    private List<IFollowingRoundsActions> m_FollowingRoundsActionsCallbackInterfaces = new List<IFollowingRoundsActions>();
+    private readonly InputAction m_FollowingRounds_BeginRound;
+    public struct FollowingRoundsActions
+    {
+        private @PlayerInputActions m_Wrapper;
+        public FollowingRoundsActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @BeginRound => m_Wrapper.m_FollowingRounds_BeginRound;
+        public InputActionMap Get() { return m_Wrapper.m_FollowingRounds; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(FollowingRoundsActions set) { return set.Get(); }
+        public void AddCallbacks(IFollowingRoundsActions instance)
+        {
+            if (instance == null || m_Wrapper.m_FollowingRoundsActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_FollowingRoundsActionsCallbackInterfaces.Add(instance);
+            @BeginRound.started += instance.OnBeginRound;
+            @BeginRound.performed += instance.OnBeginRound;
+            @BeginRound.canceled += instance.OnBeginRound;
+        }
+
+        private void UnregisterCallbacks(IFollowingRoundsActions instance)
+        {
+            @BeginRound.started -= instance.OnBeginRound;
+            @BeginRound.performed -= instance.OnBeginRound;
+            @BeginRound.canceled -= instance.OnBeginRound;
+        }
+
+        public void RemoveCallbacks(IFollowingRoundsActions instance)
+        {
+            if (m_Wrapper.m_FollowingRoundsActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IFollowingRoundsActions instance)
+        {
+            foreach (var item in m_Wrapper.m_FollowingRoundsActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_FollowingRoundsActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public FollowingRoundsActions @FollowingRounds => new FollowingRoundsActions(this);
     public interface ICannonActions
     {
         void OnFire(InputAction.CallbackContext context);
         void OnMovement(InputAction.CallbackContext context);
         void OnTrajectory(InputAction.CallbackContext context);
+    }
+    public interface IFirstRoundActions
+    {
+        void OnBeginRound(InputAction.CallbackContext context);
+    }
+    public interface IFollowingRoundsActions
+    {
+        void OnBeginRound(InputAction.CallbackContext context);
     }
 }
