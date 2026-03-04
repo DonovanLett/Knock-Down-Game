@@ -43266,6 +43266,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _time: 155
+  _warningTime: 20
+  _hazardTime: 10
+  _panicTime: 3
   _currentTime: 0
   _tickSource: {fileID: 425681605}
   _roundManager: {fileID: 1211006787}
@@ -43972,7 +43975,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1990302816}
-  m_LocalRotation: {x: 0.07175244, y: -0.69102603, z: 0.069257684, w: 0.71591765}
+  m_LocalRotation: {x: 0.07175242, y: -0.69102603, z: 0.069257684, w: 0.71591765}
   m_LocalPosition: {x: 2.133868, y: 1.9196945, z: -0.786872}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

@@ -10,8 +10,8 @@ public class Timer : MonoBehaviour
     [SerializeField]
     private int _currentTime;
 
-   // [SerializeField]
-    private double _nextTickTime;
+    [SerializeField]
+    private int _warningTime, _hazardTime, _panicTime;
 
     [SerializeField]
     private AudioSource _tickSource;
@@ -31,6 +31,7 @@ public class Timer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+       // _tickSource.PlayScheduled(AudioSettings.dspTime + 2); // Delete
         // StartTimer(); // On Round Start
     }
 
@@ -43,17 +44,10 @@ public class Timer : MonoBehaviour
     public void StartTimer()
     {
         _currentTime = _time;
-        //
-        Debug.Log(_currentTime);
-        double dspTime = AudioSettings.dspTime;
-        _nextTickTime = dspTime + 1.0f;
-        ScheduleNextTick();
-        //
-        // ConnectClickWithTimer();
-
-        // StartCoroutine(TimerInAction());
+        StartCoroutine(Countdown());
     }
 
+    /*
     IEnumerator TimerInAction()
     {
         Debug.Log(_currentTime);
@@ -61,7 +55,7 @@ public class Timer : MonoBehaviour
         {
             yield return new WaitForSeconds(1.0f);
             _currentTime--;
-           // _tickSource.Play(); // Timer
+           _tickSource.Play(); // Timer
             Debug.Log(_currentTime);
         }
         yield return new WaitForSeconds(1.0f);
@@ -70,32 +64,69 @@ public class Timer : MonoBehaviour
         _threshold.OnTimerEnded();
         _roundManager.EnableFollowingRoundsInput(); // Get rid of this line in the future
     }
+    */
 
-    //
-    void ScheduleNextTick()
+    IEnumerator Countdown()
     {
-        if (_currentTime <= 0)
-        {
-            return;
-        }
-        _tickSource.PlayScheduled(_nextTickTime);
-
-        _nextTickTime += 1.0f; // 1 second intervals
-        _currentTime--;
         Debug.Log(_currentTime);
-
-        Invoke(nameof(ScheduleNextTick), 1f);
+        while (_currentTime > 0)
+        {
+            if(_currentTime > _warningTime)
+            {
+                yield return new WaitForSeconds(1.0f);
+            }
+            else if(_currentTime <= _panicTime)
+            {
+                yield return new WaitForSeconds(0.125f);
+                _tickSource.PlayOneShot(_tickSource.clip);
+                yield return new WaitForSeconds(0.125f);
+                _tickSource.PlayOneShot(_tickSource.clip);
+                yield return new WaitForSeconds(0.125f);
+                _tickSource.PlayOneShot(_tickSource.clip);
+                yield return new WaitForSeconds(0.125f);
+                _tickSource.PlayOneShot(_tickSource.clip);
+                yield return new WaitForSeconds(0.125f);
+                _tickSource.PlayOneShot(_tickSource.clip);
+                yield return new WaitForSeconds(0.125f);
+                _tickSource.PlayOneShot(_tickSource.clip);
+                yield return new WaitForSeconds(0.125f);
+                _tickSource.PlayOneShot(_tickSource.clip);
+                yield return new WaitForSeconds(0.125f);
+            }
+            else if (_currentTime <= _hazardTime)
+            {
+                yield return new WaitForSeconds(0.25f);
+                _tickSource.PlayOneShot(_tickSource.clip);
+                yield return new WaitForSeconds(0.25f);
+                _tickSource.PlayOneShot(_tickSource.clip);
+                yield return new WaitForSeconds(0.25f);
+                _tickSource.PlayOneShot(_tickSource.clip);
+                yield return new WaitForSeconds(0.25f);
+            }
+            else if (_currentTime <= _warningTime)
+            {
+                yield return new WaitForSeconds(0.5f);
+                _tickSource.PlayOneShot(_tickSource.clip);
+                yield return new WaitForSeconds(0.5f);
+            }
+            _currentTime--;
+            Debug.Log(_currentTime);
+            if (_currentTime > 0)
+            {
+                _tickSource.PlayOneShot(_tickSource.clip); // Timer
+            }
+            else
+            {
+                OnTimerEnded();
+            }
+        }
     }
-    //
 
-    /* public void ConnectClickWithTimer()
-     {
-         _currentTime = _time;
-         double dspTime = AudioSettings.dspTime;
-
-         for (int i = 0; i < _currentTime; i++)
-         {
-             _tickSource.PlayScheduled(dspTime + i + 1);
-         }
-     } */
+    private void OnTimerEnded()
+    {
+        _levelManager.OnTimerEnded();
+        _pointSystem.OnTimerEnded();
+        _threshold.OnTimerEnded();
+        _roundManager.EnableFollowingRoundsInput();
+    }
 }
