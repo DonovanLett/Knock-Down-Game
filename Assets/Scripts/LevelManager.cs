@@ -14,6 +14,9 @@ public class LevelManager : MonoBehaviour
     private bool _roundInProgress; // _isRoundActive
 
     [SerializeField]
+    private int _indexForRandomization;
+
+    [SerializeField]
     private Threshold _threshold;
 
     [SerializeField]
@@ -61,6 +64,7 @@ public class LevelManager : MonoBehaviour
 
     public void FirstLevel()
     {
+        ShuffleRandomizedLevels(); // Round System Code
         _audioSource.Play();
         _currentLevel = 0;
         _levels[0].SetActive(true);
@@ -79,7 +83,8 @@ public class LevelManager : MonoBehaviour
         }
         else /// Delete in a second
         {
-            _currentLevel = 0;
+            ShuffleRandomizedLevels(_levels[_levels.Length - 1]); // Round System Code;
+            _currentLevel = _indexForRandomization; // Round System Code; Originally _currentLevel is set to 0;
         }
         _levels[_currentLevel].SetActive(true);
         //_simulatedPhysics.AddDrumsToPhysicsScene(_rounds[_currentRound].transform); /// Trajectory
@@ -126,6 +131,42 @@ public class LevelManager : MonoBehaviour
               t.localScale = data.localScale;
           }
       } */
+
+    // Round System Code
+    ///
+    private void ShuffleRandomizedLevels()
+    {
+        for (int i = _levels.Length - 1; i > _indexForRandomization; i--)
+        {
+            int randomIndex = Random.Range(_indexForRandomization, i + 1); // inclusive max
+            GameObject temp = _levels[i];
+            _levels[i] = _levels[randomIndex];
+            _levels[randomIndex] = temp;
+        }
+    }
+    ///
+
+    // Round System Code
+    ///
+    private void ShuffleRandomizedLevels(GameObject exception)
+    {
+        for (int i = _levels.Length - 1; i > _indexForRandomization; i--)
+        {
+            int randomIndex = Random.Range(_indexForRandomization, i + 1); // inclusive max
+            GameObject temp = _levels[i];
+            _levels[i] = _levels[randomIndex];
+            _levels[randomIndex] = temp;
+        }
+
+        if (_levels[_indexForRandomization] == exception)
+        {
+            int randomIndex = Random.Range(_indexForRandomization + 1, _levels.Length - 1); // inclusive max
+            GameObject temp = _levels[_indexForRandomization];
+            _levels[_indexForRandomization] = _levels[randomIndex];
+            _levels[randomIndex] = temp;
+        }
+    }
+    ///
 
     public void ResetBottlesInLevel(int level)
     {

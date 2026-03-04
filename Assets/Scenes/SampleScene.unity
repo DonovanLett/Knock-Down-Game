@@ -5235,6 +5235,7 @@ MonoBehaviour:
   - {fileID: 1712791188}
   _currentLevel: 0
   _roundInProgress: 0
+  _indexForRandomization: 5
   _threshold: {fileID: 319061339}
   _simulatedPhysics: {fileID: 102093723}
   _audioSource: {fileID: 425681603}
@@ -43266,10 +43267,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _time: 155
+  _currentTime: 0
   _warningTime: 20
   _hazardTime: 10
   _panicTime: 3
-  _currentTime: 0
   _tickSource: {fileID: 425681605}
   _roundManager: {fileID: 1211006787}
   _levelManager: {fileID: 204188600}
