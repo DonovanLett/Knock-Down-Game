@@ -13,6 +13,9 @@ public class PointSystem : MonoBehaviour
     [SerializeField]
     private int _pointsForEachBottle;
 
+    [SerializeField]
+    private UIManager _uiManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,7 +35,8 @@ public class PointSystem : MonoBehaviour
 
     public void OnTimerEnded()
     {
-        if(_currentPoints > _maxPoints)
+        _uiManager.EndOfRoundText(_currentPoints, _maxPoints); /// UI Code
+        if (_currentPoints > _maxPoints)
         {
             _maxPoints = _currentPoints;
         }

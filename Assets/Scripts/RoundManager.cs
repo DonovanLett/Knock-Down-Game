@@ -15,6 +15,9 @@ public class RoundManager : MonoBehaviour
     private Timer _timer;
 
     [SerializeField]
+    private UIManager _uiManager;
+
+    [SerializeField]
     private PlayerInputActions _playerInput;
 
     [SerializeField]
@@ -54,6 +57,7 @@ public class RoundManager : MonoBehaviour
         _timer.StartTimer();
         _levelManager.FirstLevel();
         _cannon.EnableControl();
+        _uiManager.OnRoundStart(); // UI Code
     }
 
     private void DisableFirstRoundInput()

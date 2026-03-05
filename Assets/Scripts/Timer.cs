@@ -28,6 +28,9 @@ public class Timer : MonoBehaviour
     [SerializeField]
     private Threshold _threshold;
 
+    [SerializeField] // UI Code
+    private UIManager _uiManager; // UI Code
+
     // Start is called before the first frame update
     void Start()
     {
@@ -44,6 +47,7 @@ public class Timer : MonoBehaviour
     public void StartTimer()
     {
         _currentTime = _time;
+        _uiManager.Timer(_currentTime); // UI Code
         StartCoroutine(Countdown());
     }
 
@@ -110,6 +114,7 @@ public class Timer : MonoBehaviour
                 yield return new WaitForSeconds(0.5f);
             }
             _currentTime--;
+            _uiManager.Timer(_currentTime); // UI Code
             Debug.Log(_currentTime);
             if (_currentTime > 0)
             {
@@ -124,6 +129,7 @@ public class Timer : MonoBehaviour
 
     private void OnTimerEnded()
     {
+        _uiManager.OnRoundEnd(); // UI Code
         _levelManager.OnTimerEnded();
         _pointSystem.OnTimerEnded();
         _threshold.OnTimerEnded();
