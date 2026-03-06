@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class Timer : MonoBehaviour
 {
@@ -30,6 +31,12 @@ public class Timer : MonoBehaviour
 
     [SerializeField] // UI Code
     private UIManager _uiManager; // UI Code
+
+    [SerializeField]
+    private Cannon _cannon;
+
+    [SerializeField]
+    private PlayableDirector _finalScoreTimeLine;
 
     // Start is called before the first frame update
     void Start()
@@ -130,9 +137,11 @@ public class Timer : MonoBehaviour
     private void OnTimerEnded()
     {
         _uiManager.OnRoundEnd(); // UI Code
+        _cannon.DisableControl();
         _levelManager.OnTimerEnded();
         _pointSystem.OnTimerEnded();
         _threshold.OnTimerEnded();
-        _roundManager.EnableFollowingRoundsInput();
+        _finalScoreTimeLine.Play();
+       // _roundManager.EnableFollowingRoundsInput(); // Lined out for UI Code
     }
 }
