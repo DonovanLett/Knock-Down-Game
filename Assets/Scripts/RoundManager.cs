@@ -31,15 +31,23 @@ public class RoundManager : MonoBehaviour
     private void OnEnable()
     {
         _playerInput = new PlayerInputActions();
+        // _playerInput.FirstRound.Enable(); // Lined out for UI Code
+        // _playerInput.FirstRound.BeginRound.performed += BeginRound; // Lined out for UI Code
+    }
+
+    public void EnableFirstRoundInput()
+    {
+       // Debug.Log("FirstRoundInput Enabled");
         _playerInput.FirstRound.Enable();
         _playerInput.FirstRound.BeginRound.performed += BeginRound;
     }
 
     public void EnableFollowingRoundsInput()
     {
+       // Debug.Log("Following Rounds Input Enabled");
         _playerInput.FollowingRounds.Enable();
         _playerInput.FollowingRounds.BeginRound.performed += BeginRound;
-        _cannon.DisableControl(); // Get rid of this line in the future
+        // _cannon.DisableControl(); // Get rid of this line in the future
     }
 
     private void BeginRound(InputAction.CallbackContext obj)
