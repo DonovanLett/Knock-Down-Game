@@ -68,7 +68,7 @@ public class LevelManager : MonoBehaviour
         _audioSource.Play();
         _currentLevel = 0;
         _levels[0].SetActive(true);
-        //  _simulatedPhysics.AddDrumsToPhysicsScene(_rounds[0].transform); /// Trajectory
+        //_simulatedPhysics.AddDrumsToPhysicsScene(_levels[0].transform); /// Trajectory
         _threshold.GetRoundBottles(_levels[0].transform);
     }
 
@@ -87,7 +87,7 @@ public class LevelManager : MonoBehaviour
             _currentLevel = _indexForRandomization; // Round System Code; Originally _currentLevel is set to 0;
         }
         _levels[_currentLevel].SetActive(true);
-        //_simulatedPhysics.AddDrumsToPhysicsScene(_rounds[_currentRound].transform); /// Trajectory
+        //_simulatedPhysics.AddDrumsToPhysicsScene(_levels[_currentLevel].transform); /// Trajectory
         _threshold.GetRoundBottles(_levels[_currentLevel].transform);
     }
 
