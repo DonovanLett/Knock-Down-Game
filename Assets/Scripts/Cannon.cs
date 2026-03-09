@@ -124,9 +124,8 @@ public class Cannon : MonoBehaviour
     {
         if(_trajectoryEnabled)
         {
-            _simulatedPhysics.SimulatedTrajectoryWithoutSimulatedScene02(_projectile, _turret.transform.TransformPoint(_packageOffset), _turret.transform.rotation, _launchForce);
+            _simulatedPhysics.SimulatedTrajectory(_projectile, _turret.transform.TransformPoint(_packageOffset), _turret.transform.rotation, _launchForce);
         }
-        // _simulatedPhysics.SimulatedTrajectory(_projectile, _turret.transform.TransformPoint(_packageOffset), _turret.transform.rotation, _launchForce);
     }
 
     void FixedUpdate()
