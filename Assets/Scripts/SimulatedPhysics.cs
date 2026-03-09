@@ -9,12 +9,10 @@ public class SimulatedPhysics : MonoBehaviour
 {
     private Scene _simulatedScene;
     private PhysicsScene _physicsScene;
-   /* [SerializeField]
-    private Transform _labParent;*/ 
+
     // Start is called before the first frame update
     void Start()
     {
-      ///  _labParent = gameObject.transform.parent.root; /// Parent
         CreateSimulatedPhysicsScene();
     }
 
@@ -29,53 +27,8 @@ public class SimulatedPhysics : MonoBehaviour
         ///
         _physicsScene = _simulatedScene.GetPhysicsScene();
         ///
-
-       /* foreach (Transform thing in _labParent)  ///
-        {                                        /// For each Object you want being simulated within the Simulated Scene (in this case, all Objects in the _labParent that are tagged "Obstacle")
-            if (thing.tag == "Obstacle")          ///
-            {
-                // Duplicate that object in the exact same spot and angle, but then immediately sets its Renderer to false, making it invisible
-                ///
-                var simulatedObstacle = Instantiate(thing.gameObject, thing.transform.position, thing.transform.rotation);
-                if (simulatedObstacle.GetComponent<Renderer>() != null)
-                {
-                    simulatedObstacle.GetComponent<Renderer>().enabled = false;
-                }
-                ///
-
-                // Switch the object over to the Simulated Scene, preventing it from being able to interact with any real-world objects
-                ///
-                SceneManager.MoveGameObjectToScene(simulatedObstacle, _simulatedScene);
-                ///
-            }
-        }*/
     }
-
-  /*  public void AddDrumsToPhysicsScene(Transform newRound) // Trajectory
-    {
-        if (_simulatedScene.GetRootGameObjects().Length != 0)
-        {
-            foreach (GameObject obj in _simulatedScene.GetRootGameObjects())
-            {
-                Destroy(obj);
-            }
-        }
-
-        foreach (Transform thing in newRound)  ///
-        {                                        /// For each Object you want being simulated within the Simulated Scene (in this case, all Objects in the newRound that are tagged "Obstacle")
-            if (thing.tag == "Drum")          ///
-            {
-                // Duplicate that object in the exact same spot and angle, but then immediately sets its Renderer to false, making it invisible
-                ///
-                var simulatedObstacle = Instantiate(thing.gameObject, thing.transform.position, thing.transform.rotation);
-                if (simulatedObstacle.GetComponent<Renderer>() != null)
-                {
-                    simulatedObstacle.GetComponent<Renderer>().enabled = false;
-                }
-            }
-        }
-    } */
-
+   
     [SerializeField]
     private LineRenderer _line;
     [SerializeField]
@@ -84,6 +37,7 @@ public class SimulatedPhysics : MonoBehaviour
     // Called every frame from your Launcher Script, taking its parameters from there as well.
     public void SimulatedTrajectory(Projectile projectile, Vector3 pos, Quaternion rot, Vector3 velocity)
     {
+
         // Instantiates the desired projectile within the Scene, but then immediately sets its Renderer to false, making it invisible
         ///
         var simulatedObj = Instantiate(projectile, pos, rot);
@@ -114,6 +68,14 @@ public class SimulatedPhysics : MonoBehaviour
 
             // ...and set the current _line vertex to where the projectile is in that exact moment
             _line.SetPosition(i, simulatedObj.transform.position);
+
+
+            // If line hits any object, have this for each loop return
+            if (Physics.CheckSphere(simulatedObj.transform.position, 0.325f))
+            {
+                _line.positionCount = i;
+                break;
+            }
         }
 
         // Once the entire line is set, destroy the simulated projectile to make room for the one next frame
