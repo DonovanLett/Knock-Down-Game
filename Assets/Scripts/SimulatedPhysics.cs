@@ -13,6 +13,7 @@ public class SimulatedPhysics : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _line.positionCount = 0;
         CreateSimulatedPhysicsScene();
     }
 
@@ -37,7 +38,6 @@ public class SimulatedPhysics : MonoBehaviour
     // Called every frame from your Launcher Script, taking its parameters from there as well.
     public void SimulatedTrajectory(Projectile projectile, Vector3 pos, Quaternion rot, Vector3 velocity)
     {
-
         // Instantiates the desired projectile within the Scene, but then immediately sets its Renderer to false, making it invisible
         ///
         var simulatedObj = Instantiate(projectile, pos, rot);
@@ -69,13 +69,13 @@ public class SimulatedPhysics : MonoBehaviour
             // ...and set the current _line vertex to where the projectile is in that exact moment
             _line.SetPosition(i, simulatedObj.transform.position);
 
-
             // If line hits any object, have this for each loop return
             if (Physics.CheckSphere(simulatedObj.transform.position, 0.325f))
             {
                 _line.positionCount = i;
                 break;
             }
+
         }
 
         // Once the entire line is set, destroy the simulated projectile to make room for the one next frame
@@ -88,4 +88,6 @@ public class SimulatedPhysics : MonoBehaviour
     {
         _line.positionCount = 0;
     }
+
+    
 }

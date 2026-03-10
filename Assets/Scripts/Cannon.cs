@@ -58,20 +58,20 @@ public class Cannon : MonoBehaviour
         _playerInput.Cannon.Enable();
         _playerInput.Cannon.Fire.performed += Fire;
 
-        //  _playerInput.Cannon.Trajectory.performed += Trajectory;
+          _playerInput.Cannon.Trajectory.performed += Trajectory;
 
-        _playerInput.Cannon.Trajectory.started += EnableTrajectory; // Trajectory
-        _playerInput.Cannon.Trajectory.canceled += DisableTrajectory; // Trajectory
+      /*  _playerInput.Cannon.Trajectory.started += EnableTrajectory; // Trajectory
+        _playerInput.Cannon.Trajectory.canceled += DisableTrajectory; // Trajectory */
     }
 
     public void DisableControl()
     {
         _playerInput.Cannon.Fire.performed -= Fire;
 
-        //  _playerInput.Cannon.Trajectory.performed += Trajectory;
+          _playerInput.Cannon.Trajectory.performed -= Trajectory;
 
-        _playerInput.Cannon.Trajectory.started -= EnableTrajectory; // Trajectory
-        _playerInput.Cannon.Trajectory.canceled -= DisableTrajectory; // Trajectory
+       /* _playerInput.Cannon.Trajectory.started -= EnableTrajectory; // Trajectory
+        _playerInput.Cannon.Trajectory.canceled -= DisableTrajectory; // Trajectory*/
         _playerInput.Cannon.Disable();
     }
 
@@ -83,7 +83,7 @@ public class Cannon : MonoBehaviour
         
     }
 
-    private void EnableTrajectory(UnityEngine.InputSystem.InputAction.CallbackContext context) // Trajectory
+   /* private void EnableTrajectory(UnityEngine.InputSystem.InputAction.CallbackContext context) // Trajectory
     {
         _trajectoryEnabled = true;
     }
@@ -92,9 +92,9 @@ public class Cannon : MonoBehaviour
     {
         _trajectoryEnabled = false;
         _simulatedPhysics.DestroyLine();
-    }
+    }*/
 
-    /* private void Trajectory(UnityEngine.InputSystem.InputAction.CallbackContext context)
+     private void Trajectory(UnityEngine.InputSystem.InputAction.CallbackContext context)
      {
          if (_trajectoryEnabled)
          {
@@ -105,7 +105,7 @@ public class Cannon : MonoBehaviour
          {
              _trajectoryEnabled = true;
          }
-     } */
+     } 
 
     private void Fire(UnityEngine.InputSystem.InputAction.CallbackContext context)
     {
