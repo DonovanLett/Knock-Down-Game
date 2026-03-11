@@ -68,11 +68,17 @@ public class Cannon : MonoBehaviour
     {
         _playerInput.Cannon.Fire.performed -= Fire;
 
-          _playerInput.Cannon.Trajectory.performed -= Trajectory;
+        _playerInput.Cannon.Trajectory.performed -= Trajectory;
 
-       /* _playerInput.Cannon.Trajectory.started -= EnableTrajectory; // Trajectory
-        _playerInput.Cannon.Trajectory.canceled -= DisableTrajectory; // Trajectory*/
+        /* _playerInput.Cannon.Trajectory.started -= EnableTrajectory; // Trajectory
+         _playerInput.Cannon.Trajectory.canceled -= DisableTrajectory; // Trajectory*/
         _playerInput.Cannon.Disable();
+
+        if (_trajectoryEnabled) // Trajectory B Code
+        {
+            _trajectoryEnabled = false;
+            _simulatedPhysics.DestroyLine();
+        }
     }
 
     private void OnEnable()
@@ -165,14 +171,17 @@ public class Cannon : MonoBehaviour
 
     public void ResetRotation()
     {
+       /* if (_trajectoryEnabled) // Trajectory B Code
+        {
+            _trajectoryEnabled = false;
+            _simulatedPhysics.DestroyLine();
+        }*/
+
         ArticulationBody body = GetComponent<ArticulationBody>();
         body.jointPosition = _defaultCannonJointPosition;
 
 
         ArticulationBody turretBody = _turret.GetComponent<ArticulationBody>();
         turretBody.jointPosition = _defaultTurretJointPosition;
-
-     //   transform.rotation = Quaternion.Euler(0, _defaultYRotation, 0);
-     //   _turret.transform.rotation = Quaternion.Euler(0, 0, _defaultZRotation);
     }
 }
