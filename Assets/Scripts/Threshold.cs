@@ -46,18 +46,15 @@ public class Threshold : MonoBehaviour
             _bottles.Remove(other.gameObject);
             _pointSystem.AddPoints();
             other.gameObject.SetActive(false);
-            ///
-            /// Possibly set other to false
-            ///
             if (_bottles.Count <= 0)
             {
                 _levelManager.NextLevel();
             }
         }
-        else if(other.gameObject.tag == "Projectile") ///
-        { ///
-            Destroy(other.gameObject); ///
-        } ///
+        else if(other.gameObject.tag == "Projectile")
+        {
+            Destroy(other.gameObject);
+        }
     }
 
     public void OnTimerEnded()

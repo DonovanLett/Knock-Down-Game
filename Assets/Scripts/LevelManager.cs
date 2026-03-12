@@ -11,9 +11,6 @@ public class LevelManager : MonoBehaviour
     private int _currentLevel;
 
     [SerializeField]
-    private bool _roundInProgress; // _isRoundActive
-
-    [SerializeField]
     private int _indexForRandomization;
 
     [SerializeField]
@@ -52,8 +49,6 @@ public class LevelManager : MonoBehaviour
                 };
             }
         }
-        // _audioSource = GetComponent<AudioSource>();
-        //FirstLevel(); // On Round Start
     }
 
     // Update is called once per frame
@@ -81,7 +76,7 @@ public class LevelManager : MonoBehaviour
         {
             _currentLevel++;
         }
-        else /// Delete in a second
+        else
         {
             ShuffleRandomizedLevels(_levels[_levels.Length - 1]); // Round System Code;
             _currentLevel = _indexForRandomization; // Round System Code; Originally _currentLevel is set to 0;
@@ -91,46 +86,12 @@ public class LevelManager : MonoBehaviour
         _threshold.GetRoundBottles(_levels[_currentLevel].transform);
     }
 
-    /* public void NextRound() //ORIGINAL
-     {
-         if (_currentRound < _rounds.Length - 1)
-         {
-             _rounds[_currentRound].SetActive(false);
-             ResetBottlesInLevel(_currentRound);
-             _currentRound++;
-             _rounds[_currentRound].SetActive(true);
-             _threshold.GetRoundBottles(_rounds[_currentRound].transform);
-         }
-         else /// Delete in a second
-         {
-             _rounds[_currentRound].SetActive(false);
-             ResetBottlesInLevel(_currentRound);
-             _currentRound = 0;
-             _rounds[_currentRound].SetActive(true);
-             _threshold.GetRoundBottles(_rounds[_currentRound].transform);
-         }
-     } */
-
     public void OnTimerEnded()
     {
-        _roundInProgress = false;
         _levels[_currentLevel].SetActive(false);
         ResetBottlesInLevel(_currentLevel);
         _currentLevel = 0;
     }
-
-    /*  public void ResetBottles()
-      {
-          foreach (var pair in initialStates)
-          {
-              Transform t = pair.Key;
-              TransformData data = pair.Value;
-
-              t.localPosition = data.localPosition;
-              t.localRotation = data.localRotation;
-              t.localScale = data.localScale;
-          }
-      } */
 
     // Round System Code
     ///

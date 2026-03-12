@@ -41,8 +41,7 @@ public class Timer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       // _tickSource.PlayScheduled(AudioSettings.dspTime + 2); // Delete
-        // StartTimer(); // On Round Start
+      
     }
 
     // Update is called once per frame
@@ -57,25 +56,6 @@ public class Timer : MonoBehaviour
         _uiManager.Timer(_currentTime); // UI Code
         StartCoroutine(Countdown());
     }
-
-    /*
-    IEnumerator TimerInAction()
-    {
-        Debug.Log(_currentTime);
-        while (_currentTime > 0)
-        {
-            yield return new WaitForSeconds(1.0f);
-            _currentTime--;
-           _tickSource.Play(); // Timer
-            Debug.Log(_currentTime);
-        }
-        yield return new WaitForSeconds(1.0f);
-        _levelManager.OnTimerEnded();
-        _pointSystem.OnTimerEnded();
-        _threshold.OnTimerEnded();
-        _roundManager.EnableFollowingRoundsInput(); // Get rid of this line in the future
-    }
-    */
 
     IEnumerator Countdown()
     {
@@ -142,6 +122,5 @@ public class Timer : MonoBehaviour
         _pointSystem.OnTimerEnded();
         _threshold.OnTimerEnded();
         _finalScoreTimeLine.Play();
-       // _roundManager.EnableFollowingRoundsInput(); // Lined out for UI Code
     }
 }
