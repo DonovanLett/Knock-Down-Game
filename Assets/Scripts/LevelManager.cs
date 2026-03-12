@@ -11,9 +11,6 @@ public class LevelManager : MonoBehaviour
     private int _currentLevel;
 
     [SerializeField]
-    private bool _roundInProgress; // _isRoundActive
-
-    [SerializeField]
     private int _indexForRandomization;
 
     [SerializeField]
@@ -113,7 +110,6 @@ public class LevelManager : MonoBehaviour
 
     public void OnTimerEnded()
     {
-        _roundInProgress = false;
         _levels[_currentLevel].SetActive(false);
         ResetBottlesInLevel(_currentLevel);
         _currentLevel = 0;
