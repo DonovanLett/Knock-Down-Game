@@ -89,6 +89,4 @@ public class UIManager : MonoBehaviour
             _firstRound = false;
         }
     }
-
-    
 }

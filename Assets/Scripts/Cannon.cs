@@ -84,9 +84,6 @@ public class Cannon : MonoBehaviour
     private void OnEnable()
     {
         _playerInput = new PlayerInputActions();
-        //_defaultYRotation = transform.rotation.y;
-        //_defaultZRotation = _turret.transform.rotation.z;
-        
     }
 
    /* private void EnableTrajectory(UnityEngine.InputSystem.InputAction.CallbackContext context) // Trajectory
@@ -111,7 +108,7 @@ public class Cannon : MonoBehaviour
          {
              _trajectoryEnabled = true;
          }
-     } 
+     }
 
     private void Fire(UnityEngine.InputSystem.InputAction.CallbackContext context)
     {
