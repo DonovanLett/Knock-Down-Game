@@ -36,17 +36,6 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "5cbd7ab7-faee-408a-b492-aedbf7848df6",
-                    "path": "<Keyboard>/m",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Fire",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "c009b572-c7d2-4191-9e81-ae32e4521d2f",
                     "path": "<Mouse>/press",
                     "interactions": "",
